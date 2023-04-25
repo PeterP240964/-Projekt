@@ -1,16 +1,20 @@
 package pckg;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class Film {
     private String nazov;
     private String reziser;
     private int rokVydania;
-    private HodnotenieDivakov hodnotenieDivakov;
+    private Hodnotenie hodnotenie;
+    private ArrayList<String> zoznamHercovAAnimatorov;
     
-    public Film(String nazov, String reziser, int rokVydania, HodnotenieDivakov hodnotenieDivakov) {
+    public Film(String nazov, String reziser, int rokVydania, Hodnotenie hodnotenie) {
         this.nazov = nazov;
         this.reziser = reziser;
         this.rokVydania = rokVydania;
-        this.hodnotenieDivakov = hodnotenieDivakov;
+        this.hodnotenie = hodnotenie;
     }
     
     public String getNazov() {
@@ -37,18 +41,27 @@ public class Film {
         this.rokVydania = rokVydania;
     }
 
-    public HodnotenieDivakov getHodnotenieDivakov() {
-        return hodnotenieDivakov;
+    public Hodnotenie getHodnotenie() {
+        return hodnotenie;
     }
     
-    public void setHodnotenieDivakov(HodnotenieDivakov hodnotenieDivakov) {
-        this.hodnotenieDivakov = hodnotenieDivakov;
+    public void setHodnotenie(Hodnotenie hodnotenie) {
+        this.hodnotenie = hodnotenie;
     }
+    
+    public List<String> zoznamHercovAAnimatorov() {
+        List<String> zoznamHercovAAnimatorov = new ArrayList<>();
+        for (String herecAleboAnimator : this.zoznamHercovAAnimatorov) {
+        	zoznamHercovAAnimatorov.add(herecAleboAnimator);
+        }
+        return zoznamHercovAAnimatorov;
+    }
+
     
     @Override
     
     public String toString() {
-        return "Nazov: " + nazov + "\nReziser: " + reziser + "\nRok vydania: " + rokVydania + "\nHodnotenie divakov: " + hodnotenieDivakov + "\n";
+        return "Nazov: " + nazov + "\nReziser: " + reziser + "\nRok vydania: " + rokVydania + "\nHodnotenie: " + hodnotenie + "\n";
     }
 
 }

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class HranyF extends Film {
     private ArrayList<String> zoznamHercov;
     
-    public HranyF(String nazov, String reziser, int rokVydania, HodnotenieDivakov hodnotenieDivakov, ArrayList<String> zoznamHercov) {
-        super(nazov, reziser, rokVydania, hodnotenieDivakov); //tento konstruktor vola z konstruktoru Film
+    public HranyF(String nazov, String reziser, int rokVydania, Hodnotenie hodnotenie, ArrayList<String> zoznamHercov) {
+        super(nazov, reziser, rokVydania, hodnotenie); //tento konstruktor vola z konstruktoru Film
         this.zoznamHercov = zoznamHercov;
     }
 
@@ -24,7 +24,7 @@ public class HranyF extends Film {
                 "nazov='" + getNazov() + '\'' +
                 ", reziser='" + getReziser() + '\'' +
                 ", rokVydania=" + getRokVydania() +
-                ", HodnotenieDivakov=" + getHodnotenieDivakov() +
+                ", Hodnotenie=" + getHodnotenie() +
                 ", zoznamHercov=" + zoznamHercov +
                 '}';
     }

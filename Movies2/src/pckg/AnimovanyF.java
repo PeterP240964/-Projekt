@@ -6,8 +6,8 @@ public class AnimovanyF extends Film {
  private ArrayList<String> zoznamAnimatorov;
  private int doporucenyVek;
  
- public AnimovanyF(String nazov, String reziser, int rokVydania, HodnotenieDivakov hodnotenieDivakov, ArrayList<String> zoznamAnimatorov, int doporucenyVek) {
-     super(nazov, reziser, rokVydania, hodnotenieDivakov); //tento konstruktor vola z konstruktoru Film
+ public AnimovanyF(String nazov, String reziser, int rokVydania, Hodnotenie hodnotenie, ArrayList<String> zoznamAnimatorov, int doporucenyVek) {
+     super(nazov, reziser, rokVydania, hodnotenie); //tento konstruktor vola z konstruktoru Film
      this.zoznamAnimatorov = zoznamAnimatorov;
      this.doporucenyVek = doporucenyVek;
  }
@@ -34,7 +34,7 @@ public class AnimovanyF extends Film {
              "nazov='" + getNazov() + '\'' +
              ", reziser='" + getReziser() + '\'' +
              ", rokVydania=" + getRokVydania() +
-             ", hodnotenieDivakov=" + getHodnotenieDivakov() +
+             ", hodnotenie=" + getHodnotenie() +
              ", zoznamAnimatorov=" + zoznamAnimatorov +
              ", doporucenyVek=" + doporucenyVek +
              '}';
