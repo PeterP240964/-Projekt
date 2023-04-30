@@ -1,6 +1,7 @@
 package pckg;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import java.util.HashSet;
@@ -60,33 +61,25 @@ public class App {
 			        sc.nextLine();
 
 			        if (typ == 1) {
-			        	System.out.println("Zadajte hodnotenie (1-5):");
-			            int hodnotenie = sc.nextInt();
-			            sc.nextLine();
 			            System.out.println("Zadajte zoznam hercov oddelenych ciarkou:");
 			            String[] herci = sc.nextLine().split(",");
 			            ArrayList<String> zoznamHercov = new ArrayList<>();
 			            for (String herec : herci) {
 			                zoznamHercov.add(herec.trim());
 			            }
-			            Hodnotenie hodnotenie1 = new Hodnotenie(hodnotenie, 1, 5);
-			            Film hranyFilm = new HranyF(nazov, reziser, rok, hodnotenie1, zoznamHercov);
+			            Film hranyFilm = new HranyF(nazov, reziser, rok, zoznamHercov);
 			            zoznamFilmov.add(hranyFilm);
 			        } else if (typ == 2) {
-			        	System.out.println("Zadajte hodnotenie (1-10):");
-			            int hodnotenie = sc.nextInt();
-			            sc.nextLine();
 			            System.out.println("Zadajte zoznam animatorov oddelenych ciarkou:");
 			            String[] animatori = sc.nextLine().split(",");
 			            ArrayList<String> zoznamAnimatorov = new ArrayList<>();
 			            for (String animator : animatori) {
 			                zoznamAnimatorov.add(animator.trim());
 			            }
-			            Hodnotenie hodnotenie2 = new Hodnotenie(hodnotenie, 1, 10);
 			            System.out.println("Zadajte doporuceny vek:");
 			            int doporucenyVek = sc.nextInt();
 			            sc.nextLine();
-			            Film animFilm = new AnimovanyF(nazov, reziser, rok, hodnotenie2, zoznamAnimatorov, doporucenyVek);
+			            Film animFilm = new AnimovanyF(nazov, reziser, rok, zoznamAnimatorov, doporucenyVek);
 			            zoznamFilmov.add(animFilm);
 			        }
 			        break;
@@ -103,8 +96,7 @@ public class App {
 			    			System.out.println("1 - Nazov");
 			    			System.out.println("2 - Rezisera");
 			    			System.out.println("3 - Rok vydania");
-			    			System.out.println("4 - Hodnotenie divakov");
-			    			System.out.println("5 - Zoznam hercov/animatorov");
+			    			System.out.println("4 - Zoznam hercov/animatorov");
 			    			int volbaUpravy = sc.nextInt();
 			    			sc.nextLine();
 
@@ -128,24 +120,7 @@ public class App {
 			    					film.setRokVydania(novyRok);
 			    					break;
 
-			    				case 4:			    					
-			    					if (film instanceof HranyF) {
-			    						System.out.println("Zadajte nove hodnotenie (1-5):");
-				    					int noveHodnotenie = sc.nextInt();
-				    					sc.nextLine();
-				    					Hodnotenie noveHodnotenie1 = new Hodnotenie(noveHodnotenie, 1, 5);
-				    					film.setHodnotenie(noveHodnotenie1);			    						
-	
-			    					} else if (film instanceof AnimovanyF) {
-			    						System.out.println("Zadajte nove hodnotenie (1-10):");
-				    					int noveHodnotenie = sc.nextInt();
-				    					sc.nextLine();
-				    					Hodnotenie noveHodnotenie2 = new Hodnotenie(noveHodnotenie, 1, 10);
-				    					film.setHodnotenie(noveHodnotenie2);	   						
-			    					}			    						    					
-			    					break;
-
-			    				case 5:
+			    				case 4:
 			    					if (film instanceof HranyF) {
 			    						System.out.println("Zadajte zoznam hercov oddelenych ciarkou:");
 			    						String[] herci = sc.nextLine().split(",");
@@ -197,8 +172,7 @@ public class App {
 			        }
 			        break;
 			        
-			        // ------------------------------------------------------------ Dorobit volitelne hodnotenie!
-			    case 4: //Pridanie hodnotenia filmu podla nazvu
+				case 4: //Pridanie hodnotenia filmu podla nazvu
 			    	boolean nasielSaUprava = false;
 			    	System.out.println("Zadajte nazov upravovaneho filmu:");
 			    	sc.nextLine(); // Clear newline characters
@@ -207,69 +181,68 @@ public class App {
 						if (film.getNazov().equals(pridanieHodnotenia)) {
 			    			nasielSaUprava = true;	    					
 			    					if (film instanceof HranyF) {
-			    						System.out.println("Zadajte nove hodnotenie (1-5):");
-				    					int noveHodnotenie = sc.nextInt();
+			    						System.out.println("Zadajte bodove hodnotenie (1-5):");
+				    					int bodoveHodnotenie = sc.nextInt();
 				    					sc.nextLine();
-				    					Hodnotenie noveHodnotenie1 = new Hodnotenie(noveHodnotenie, 1, 5);
-				    					film.setHodnotenie(noveHodnotenie1);			    						
-	
+				    					System.out.println("Zadajte slovne hodnotenie:");
+				    					String slovneHodnotenie = sc.nextLine();
+				    					Hodnotenie noveHodnotenie1 = new Hodnotenie(bodoveHodnotenie, slovneHodnotenie, 1, 5);
+				    					List<Hodnotenie> hodnotenia = film.getHodnotenia();
+				    					hodnotenia.add(noveHodnotenie1);
+				    					film.setHodnotenia(hodnotenia);			    						
+
 			    					} else if (film instanceof AnimovanyF) {
-			    						System.out.println("Zadajte nove hodnotenie (1-10):");
-				    					int noveHodnotenie = sc.nextInt();
+			    						System.out.println("Zadajte bodove hodnotenie (1-10):");
+				    					int bodoveHodnotenie = sc.nextInt();
 				    					sc.nextLine();
-				    					Hodnotenie noveHodnotenie2 = new Hodnotenie(noveHodnotenie, 1, 10);
-				    					film.setHodnotenie(noveHodnotenie2);	   						
+				    					System.out.println("Zadajte slovne hodnotenie:");
+				    					String slovneHodnotenie = sc.nextLine();
+				    					Hodnotenie noveHodnotenie2 = new Hodnotenie(bodoveHodnotenie, slovneHodnotenie, 1, 10);
+				    					List<Hodnotenie> hodnotenia = film.getHodnotenia();
+				    					hodnotenia.add(noveHodnotenie2);
+				    					film.setHodnotenia(hodnotenia);	   						
 				    					}	
 			    					}
 						}
 			    	if (!nasielSaUprava) {
 			    		System.out.println("Film s názvom " + pridanieHodnotenia + " nebol nájdený.");
 			    	}
-			    	break;    
+			    	break; 
 
-			    case 5: //Vypis filmov
+
+			    case 5: //Vypis vsetkych filmov
 			        System.out.println("Vybrali jste vypsání všech filmů.");
 			        for (Film film : zoznamFilmov) {
 			            System.out.println(film.toString());
 			        }
 			        break;
 			        
-			     // ------------------------------------------------------------ Nechapem co zoradit ked dame vypisat len jeden film???
-			    case 6: // Vyhledání filmu
-			        System.out.println("Zadajte nazov filmu:");
+			    //-------------------------------------------------------------------------Dorobit este vypisanie vsetkych informaci
+			    case 6: //Vyhladanie filmu a vypisanie vsetkych informaci + hodnotenia
+			        boolean nasielSaFilm = false;
 			        sc.nextLine(); // Clear newline characters
-			        String nazovFilmu = sc.nextLine();
-			        boolean najdenyFilm = false;
+			        System.out.println("Zadajte nazov filmu:");
+			        String nazovFilmu1 = sc.nextLine();
 			        for (Film film : zoznamFilmov) {
-			            if (film.getNazov().equalsIgnoreCase(nazovFilmu)) {
-			            	najdenyFilm = true;
-			                System.out.println("Informacie o filme:");
-			                System.out.println("Nazov: " + film.getNazov());
-			                System.out.println("Reziser: " + film.getReziser());
-			                System.out.println("Rok vydania: " + film.getRokVydania());
-			                if (film instanceof HranyF) {
-			                    System.out.println("Typ: Hrany film");
-			                    System.out.println("Zoznam hercov: " + ((HranyF) film).getZoznamHercov());
-			                    System.out.println("Hodnotenie: ");
-			                    Hodnotenie hodnotenie = ((HranyF) film).getHodnotenie();
-			                    System.out.println(hodnotenie.getHodnotenie() + "/5");
-			                } else if (film instanceof AnimovanyF) {
-			                    System.out.println("Typ: Animovaný film");
-			                    System.out.println("Zoznam animatorov: " + ((AnimovanyF) film).getZoznamAnimatorov());
-			                    System.out.println("Hodnotenie: ");
-			                    Hodnotenie hodnotenie = ((AnimovanyF) film).getHodnotenie();
-			                    System.out.println(hodnotenie.getHodnotenie() + "/10");
-			                    System.out.println("Odporucany vek: " + ((AnimovanyF) film).getDoporucenyVek());
+			            if (film.getNazov().equals(nazovFilmu1)) {
+			                nasielSaFilm = true;
+			                List<Hodnotenie> hodnotenia = film.getHodnotenia();
+			                if (hodnotenia.size() == 0) {
+			                    System.out.println("Pre tento film nie sú dostupné žiadne hodnotenia.");
+			                } else {
+			                    Collections.sort(hodnotenia, Collections.reverseOrder());
+			                    System.out.println("Hodnotenia pre film " + nazovFilmu1 + ":");
+			                    for (Hodnotenie hodnotenie : hodnotenia) {
+			                        System.out.println(hodnotenie);
+			                    }
 			                }
-			                break;
 			            }
 			        }
-			        if (!najdenyFilm) {
-			            System.out.println("Film s nazvom '" + nazovFilmu + "' sa nenasiel.");
+			        if (!nasielSaFilm) {
+			            System.out.println("Film s názvom " + nazovFilmu1 + " nebol nájdený.");
 			        }
 			        break;
-			        
-			        //Vypis hercov / animatorov hrajucich na vsetkych filmoch
+
 			       
 			    case 7: // Vypis hercov / animatorov hrajucich na vsetkych filmoch
 			        Map<String, Set<String>> herciAanimatori = new HashMap<>();

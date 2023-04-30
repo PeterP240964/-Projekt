@@ -1,31 +1,48 @@
 package pckg;
 
-public class Hodnotenie implements Comparable<Hodnotenie> { // triedu Hodnotenie je mozne porovnavat s inymi objektami v tejto triede
- private int hodnotenie;
+import java.util.Comparator;
 
- public Hodnotenie(int hodnotenie, int minHodnota, int maxHodnota) {
-	    if (hodnotenie < minHodnota || hodnotenie > maxHodnota) {
-	        throw new IllegalArgumentException("Hodnota hodnotenia musí byť medzi " + minHodnota + " a " + maxHodnota);
+public class Hodnotenie implements Comparable<Hodnotenie> {
+private int bodoveHodnotenie;
+private String slovneHodnotenie;
+
+	public Hodnotenie(int bodoveHodnotenie, String slovneHodnotenie, int minHodnota, int maxHodnota) {
+	    if (bodoveHodnotenie < minHodnota || bodoveHodnotenie > maxHodnota) {
+	        throw new IllegalArgumentException("Hodnota bodového hodnotenia musí byť medzi " + minHodnota + " a " + maxHodnota);
 	    }
-	    this.setHodnotenie(hodnotenie);
-	}
-
-	public int getHodnotenie() {
-		return hodnotenie;
+	    this.bodoveHodnotenie = bodoveHodnotenie;
+	    this.slovneHodnotenie = slovneHodnotenie;
 	}
 	
-	
-	public void setHodnotenie(int hodnotenie) {
-		this.hodnotenie = hodnotenie;
+	public int getBodoveHodnotenie() {
+	    return bodoveHodnotenie;
 	}
 	
-	 @Override
-	 public String toString() {
-	         return Integer.toString(hodnotenie);
-	     }
-	 
-	 @Override
-	 public int compareTo(Hodnotenie other) {
-	     return Integer.compare(this.hodnotenie, other.hodnotenie);
-	 }
+	public void setBodoveHodnotenie(int bodoveHodnotenie) {
+	    this.bodoveHodnotenie = bodoveHodnotenie;
+	}
+	
+	public String getSlovneHodnotenie() {
+	    return slovneHodnotenie;
+	}
+	
+	public void setSlovneHodnotenie(String slovneHodnotenie) {
+	    this.slovneHodnotenie = slovneHodnotenie;
+	}
+	
+	@Override
+	public String toString() {
+	    return bodoveHodnotenie + " - " + slovneHodnotenie;
+	}
+	
+	@Override
+	public int compareTo(Hodnotenie other) {
+	    return Integer.compare(this.bodoveHodnotenie, other.bodoveHodnotenie);
+	}
+	
+	public static Comparator<Hodnotenie> HodnotenieComparator = new Comparator<Hodnotenie>() {
+	    public int compare(Hodnotenie hodnotenie1, Hodnotenie hodnotenie2) {
+	        return Integer.compare(hodnotenie2.getBodoveHodnotenie(), hodnotenie1.getBodoveHodnotenie());
+	    }
+	};
 }
