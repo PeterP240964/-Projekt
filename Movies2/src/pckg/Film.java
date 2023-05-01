@@ -9,18 +9,18 @@ public class Film {
     private int rokVydania;
     private ArrayList<String> zoznamHercovAAnimatorov;
     private ArrayList<Hodnotenie> zoznamHodnoteni;
-    
+
     public Film(String nazov, String reziser, int rokVydania) {
         this.nazov = nazov;
         this.reziser = reziser;
         this.rokVydania = rokVydania;
         this.zoznamHodnoteni = new ArrayList<>();
     }
-    
+
     public String getNazov() {
         return nazov;
     }
-    
+
     public void setNazov(String nazov) {
         this.nazov = nazov;
     }
@@ -28,7 +28,7 @@ public class Film {
     public String getReziser() {
         return reziser;
     }
-    
+
     public void setReziser(String reziser) {
         this.reziser = reziser;
     }
@@ -36,17 +36,22 @@ public class Film {
     public int getRokVydania() {
         return rokVydania;
     }
-    
+
     public void setRokVydania(int rokVydania) {
         this.rokVydania = rokVydania;
     }
-    
+
     public List<Hodnotenie> getHodnotenia() {
         return zoznamHodnoteni;
     }
-    
+
     public void setHodnotenia(List<Hodnotenie> zoznamHodnoteni) {
         this.zoznamHodnoteni = new ArrayList<>(zoznamHodnoteni);
+    }
+
+    public void noveHodnotenia(Hodnotenie zoznamHodnoteni) 
+    {
+    	this.zoznamHodnoteni.add(zoznamHodnoteni);
     }
 
     public List<String> getZoznamHercovAAnimatorov() {

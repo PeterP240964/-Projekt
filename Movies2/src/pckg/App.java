@@ -1,6 +1,7 @@
 package pckg;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
@@ -8,17 +9,31 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.io.File;
 
 public class App {
-    public static void main(String[] args) {
-    	        
+    public static void main(String[] args) throws IOException, ClassNotFoundException{
+
+    	Databaza Films = new Databaza();
+    	Connections connection = new Connections();
+    	if (connection.getDBConnection())
+    	{
+    		connection.getDB(Films);
+
+    	}
+
     	List<Film> zoznamFilmov = new ArrayList<>();
         try (Scanner sc = new Scanner(System.in)) {
             int volba = 0;
             boolean run = true;
             int iteration = 0;
-			
-			VytvorenieTest.filmTest(zoznamFilmov); //pridanie testovacich filmov
 
 		    while (run) {
 		        if (iteration == 0)
@@ -40,14 +55,26 @@ public class App {
 				    volba = ConsoleInputCheck.readNumberInputFromConsole(sc);
 
 			    switch (volba) {
-			    
+
 			    case 0:
+			    {
+			    	System.out.println();
+			    	System.out.println("Koniec programu");
+
+                    connection.saveDB(Films);
+                    connection.createTableHranyF();
+                    connection.createTableAnimovanyF();
+                    connection.saveDB(Films);
+                    connection.closeConnection();
+
+			    }	
+
 			        run = false;
 			        break;
 
-			    case 1:	// Pridanie noveho filmu
+			    case 1:	
 			        System.out.println("Zadajte nazov filmu:");
-			        sc.nextLine(); // Clear newline characters
+			        sc.nextLine(); 
 			        String nazov = sc.nextLine();
 			        System.out.println("Zadajte meno rezisera:");
 			        String reziser = sc.nextLine();
@@ -83,11 +110,11 @@ public class App {
 			            zoznamFilmov.add(animFilm);
 			        }
 			        break;
-			        
-			    case 2: //Upravenie filmu podla nazvu
+
+			    case 2: 
 			    	boolean nasielSa = false;
 			    	System.out.println("Zadajte nazov upravovaneho filmu:");
-			    	sc.nextLine(); // Clear newline characters
+			    	sc.nextLine(); 
 			    	String nazovUpravovanehoFilmu = sc.nextLine();
 			    	for (Film film : zoznamFilmov) {
 			    		if (film.getNazov().equals(nazovUpravovanehoFilmu)) {
@@ -151,10 +178,10 @@ public class App {
 			    		System.out.println("Film s názvom " + nazovUpravovanehoFilmu + " nebol nájdený.");
 			    	}
 			    	break;
-			        
-			    case 3: //Zmazanie filmu podla nazvu
+
+			    case 3: 
 			        System.out.println("Zadajte názov filmu, ktorý chcete zmazať:");
-			        sc.nextLine(); // Clear newline characters
+			        sc.nextLine(); 
 			        String nazovMazanehoFilmu = sc.nextLine();
 			        boolean bolVymazany = false;
 			        for (int i = 0; i < zoznamFilmov.size(); i++) {
@@ -171,11 +198,11 @@ public class App {
 			            System.out.println("Film s názvom " + nazovMazanehoFilmu + " nebol nájdený.");
 			        }
 			        break;
-			        
-				case 4: //Pridanie hodnotenia filmu podla nazvu
+
+				case 4: 
 			    	boolean nasielSaUprava = false;
 			    	System.out.println("Zadajte nazov upravovaneho filmu:");
-			    	sc.nextLine(); // Clear newline characters
+			    	sc.nextLine(); 
 			    	String pridanieHodnotenia = sc.nextLine();
 			    	for (Film film : zoznamFilmov) {
 						if (film.getNazov().equals(pridanieHodnotenia)) {
@@ -209,18 +236,16 @@ public class App {
 			    	}
 			    	break; 
 
-
-			    case 5: //Vypis vsetkych filmov
+			    case 5: 
 			        System.out.println("Vybrali jste vypsání všech filmů.");
 			        for (Film film : zoznamFilmov) {
 			            System.out.println(film.toString());
 			        }
 			        break;
-			        
-			    //-------------------------------------------------------------------------Dorobit este vypisanie vsetkych informaci
-			    case 6: //Vyhladanie filmu a vypisanie vsetkych informaci + hodnotenia
+
+			    case 6: 
 			        boolean nasielSaFilm = false;
-			        sc.nextLine(); // Clear newline characters
+			        sc.nextLine(); 
 			        System.out.println("Zadajte nazov filmu:");
 			        String nazovFilmu1 = sc.nextLine();
 			        for (Film film : zoznamFilmov) {
@@ -243,8 +268,7 @@ public class App {
 			        }
 			        break;
 
-			       
-			    case 7: // Vypis hercov / animatorov hrajucich na vsetkych filmoch
+			    case 7: 
 			        Map<String, Set<String>> herciAanimatori = new HashMap<>();
 			        for (Film film : zoznamFilmov) {
 			            if (film instanceof HranyF) {
@@ -271,12 +295,12 @@ public class App {
 			            System.out.println("Ziadni herci / animatori nehrali v rovnakych filmoch.");
 			        }
 			        break;
-			        
-			    case 8: // Vypis filmov s konkretnym hercom / animatorom
+
+			    case 8: 
 			        Scanner scanner = new Scanner(System.in);
 			        System.out.print("Zadaj hladaneho herca / animatora: ");
 			        String hladany = scanner.nextLine();
-			        
+
 			        Map<String, Set<String>> herciAanimatori1Filmy = new HashMap<>();
 			        for (Film film : zoznamFilmov) {
 			            if (film instanceof HranyF) {
@@ -307,11 +331,136 @@ public class App {
 			            System.out.println("Nenasiel sa ziadny film s hladanym hercom / animatorom.");
 			        }
 			        break;
-			        
-			    default:
-			        System.out.println("Takato volba neexistuje.");
+
+			    case 9: 
+			        System.out.println("Zadajte nazov filmu:");
+			        sc.nextLine(); 
+			        String nazovFilmu = sc.nextLine();
+
+			        Film najdenyFilm = null;
+			        for (Film film : zoznamFilmov) {
+			            if (film.getNazov().equals(nazovFilmu)) {
+			                najdenyFilm = film;
+			                break;
+			            }
+			        }
+
+			        if (najdenyFilm == null) {
+			            System.out.println("Film s nazvom " + nazovFilmu + " nebol najdeny.");
+			            break;
+			        }
+
+			        try (PrintWriter writer = new PrintWriter(nazovFilmu + ".txt")) {
+			            writer.println(najdenyFilm.getNazov());
+			            writer.println(najdenyFilm.getReziser());
+			            writer.println(najdenyFilm.getRokVydania());
+			            if (najdenyFilm instanceof HranyF) {
+			                HranyF hranyFilm = (HranyF) najdenyFilm;
+			                writer.println(String.join(",", hranyFilm.getZoznamHercov()));
+			                writer.println("HranyF");
+			            } else if (najdenyFilm instanceof AnimovanyF) {
+			                AnimovanyF animFilm = (AnimovanyF) najdenyFilm;
+			                writer.println(String.join(",", animFilm.getZoznamAnimatorov()));
+			                writer.println(animFilm.getDoporucenyVek());
+			                writer.println("AnimovanyF");
+			            }
+			            System.out.println("Film bol uspesne ulozeny do suboru " + nazovFilmu + ".txt");
+			        } catch (IOException e) {
+			            System.out.println("Chyba pri ukladani filmu do suboru.");
+			            e.printStackTrace();
+			        }
 			        break;
 
+			    /*case 10:
+			        System.out.println("Zadajte nazov suboru:");
+			        sc.nextLine(); 
+			        String nazovSuboru = sc.nextLine();
+
+			        try (Scanner scanner1 = new Scanner(new File(nazovSuboru))) {
+			            String nazov1 = scanner1.nextLine();
+			            String reziser1 = scanner1.nextLine();
+			            int rokVydania = scanner1.nextInt();
+			            scanner1.nextLine(); 
+
+			            Film nacitanyFilm;
+			            if (scanner1.hasNextInt()) {
+			                int doporucenyVek = scanner1.nextInt();
+			                scanner1.nextLine(); 
+			                String[] zoznamAnimatorov1 = scanner1.nextLine().split(",");
+			                nacitanyFilm = new AnimovanyF(nazov1, reziser1, rokVydania, new ArrayList<>(Arrays.asList(zoznamAnimatorov1)), doporucenyVek);
+
+			            } else {
+			                String[] zoznamHercov = scanner1.nextLine().split(",");
+			                ArrayList<String> herciList = new ArrayList<String>(Arrays.asList(zoznamHercov));
+			                nacitanyFilm = new HranyF(nazov1, reziser1, rokVydania, herciList);
+
+			            }
+
+			            System.out.println("Nazov filmu: " + nacitanyFilm.getNazov());
+			            System.out.println("Reziser: " + nacitanyFilm.getReziser());
+			            System.out.println("Rok vydania: " + nacitanyFilm.getRokVydania());
+
+			            if (nacitanyFilm instanceof HranyF) {
+			                HranyF hranyFilm = (HranyF) nacitanyFilm;
+			                System.out.println("Typ: hrany film");
+			                System.out.println("Herci: " + String.join(", ", hranyFilm.getZoznamHercov()));
+			            } else if (nacitanyFilm instanceof AnimovanyF) {
+			                AnimovanyF animFilm = (AnimovanyF) nacitanyFilm;
+			                System.out.println("Typ: animovany film");
+			                System.out.println("Animatori: " + String.join(", ", animFilm.getZoznamAnimatorov()));
+			                System.out.println("Doporuceny vek: " + animFilm.getDoporucenyVek());
+			            }
+			        } catch (FileNotFoundException e) {
+			            System.out.println("Subor s nazvom " + nazovSuboru + " nebol najdeny.");
+			        }
+
+			        break; */
+			        
+			    case 10:
+			        System.out.println("Zadajte nazov suboru s filmom:");
+			        sc.nextLine(); 
+			        String nazovSuboru = sc.nextLine();
+
+			        try (Scanner scanner1 = new Scanner(new File(nazovSuboru))) {
+			            String nazovFilmu11 = scanner1.nextLine();
+			            String reziser1 = scanner1.nextLine();
+			            int rokVydania = Integer.parseInt(scanner1.nextLine());
+			            String zoznamHercovAleboAnimatorov = scanner1.nextLine();
+			            String typFilmu = scanner1.nextLine();
+
+			            Film film = null;
+			            if (typFilmu.equals("HranyF")) {
+			                String[] zoznamHercov = zoznamHercovAleboAnimatorov.split(",");
+			                film = new HranyF(nazovFilmu11, reziser1, rokVydania, new ArrayList<>(Arrays.asList(zoznamHercov)));
+			            } else if (typFilmu.equals("AnimovanyF")) {
+			                int doporucenyVek = Integer.parseInt(zoznamHercovAleboAnimatorov);
+			                String[] zoznamAnimatorov = scanner1.nextLine().split(",");
+			                film = new AnimovanyF(nazovFilmu11, reziser1, rokVydania, new ArrayList<>(Arrays.asList(zoznamAnimatorov)), doporucenyVek);
+			            } else {
+			                System.out.println("Chyba: Neplatny typ filmu v subore.");
+			                break;
+			            }
+			            System.out.println("Nazov: " + film.getNazov());
+			            System.out.println("Reziser: " + film.getReziser());
+			            System.out.println("Rok vydania: " + film.getRokVydania());
+			            if (film instanceof HranyF) {
+			                HranyF hranyFilm = (HranyF) film;
+			                System.out.println("Zoznam hercov: " + String.join(", ", hranyFilm.getZoznamHercov()));
+			            } else if (film instanceof AnimovanyF) {
+			                AnimovanyF animFilm = (AnimovanyF) film;
+			                System.out.println("Zoznam animatorov: " + String.join(", ", animFilm.getZoznamAnimatorov()));
+			                System.out.println("Doporuceny vek: " + animFilm.getDoporucenyVek());
+			            }
+			        } catch (FileNotFoundException e) {
+			            System.out.println("Chyba: Subor s nazvom " + nazovSuboru + " nebol najdeny.");
+			        } catch (NumberFormatException e) {
+			            System.out.println("Chyba: Neplatny format cisla v subore.");
+			        }
+			        break;
+
+			     default:
+			         System.out.println("Takato volba neexistuje.");
+			         break;
 			    }
 			}
 		}
