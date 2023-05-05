@@ -6,6 +6,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/G14/Desktop/PC2T-NIC-NEJDE/Movies2/sqlite-jdbc-3.41.2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/G14/Desktop/PC2T/Semestrálny projekt na Githube/PC2T-Project/MovieManager/sqlite-jdbc-3.41.2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
